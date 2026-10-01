@@ -4,6 +4,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<IWebhookEventRepository, InMemoryWebhookEventRepository>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
