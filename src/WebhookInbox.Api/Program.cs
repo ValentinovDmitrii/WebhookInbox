@@ -6,7 +6,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IWebhookEventRepository, InMemoryWebhookEventRepository>();
 
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
