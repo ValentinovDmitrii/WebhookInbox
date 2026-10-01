@@ -1,6 +1,6 @@
 @WebhookInbox_HostAddress = http://localhost:5282
 
-GET {{WebhookInbox_HostAddress}}/api/health/
+GET {{WebhookInbox_HostAddress}}/health/
 Accept: application/json
 
 ###
