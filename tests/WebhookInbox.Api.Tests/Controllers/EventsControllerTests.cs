@@ -43,42 +43,6 @@ public class EventsControllerTests
         Assert.IsType<NotFoundResult>(result);
     }
 
-    // [Fact]
-    // public async Task GetAllEvents_ReturnsOkResultWithAllEvents()
-    // {
-    //     var webhookEvent1 = new WebhookEvent
-    //     {
-    //         Id = Guid.NewGuid(),
-    //         ReceivedAt = DateTimeOffset.UtcNow,
-    //         Source = "github",
-    //         EventType = "push",
-    //         Payload = "{}"
-    //     };
-
-    //     var webhookEvent2 = new WebhookEvent
-    //     {
-    //         Id = Guid.NewGuid(),
-    //         ReceivedAt = DateTimeOffset.UtcNow,
-    //         Source = "gitlab",
-    //         EventType = "merge_request",
-    //         Payload = "{}"
-    //     };
-
-    //     var repositoryMock = new Mock<IWebhookEventRepository>();
-    //     repositoryMock.Setup(r => r.AddEventAsync(webhookEvent1)).Returns(Task.CompletedTask);
-    //     repositoryMock.Setup(r => r.AddEventAsync(webhookEvent2)).Returns(Task.CompletedTask);
-
-    //     var controller = new EventsController(repositoryMock.Object);
-
-    //     var result = await controller.ListEvents();
-
-    //     var okResult = Assert.IsType<OkObjectResult>(result);
-    //     var returnedEvents = Assert.IsAssignableFrom<IEnumerable<WebhookEvent>>(okResult.Value);
-    //     Assert.Equal(2, returnedEvents.Count());
-    //     Assert.Contains(returnedEvents, e => e.Id == webhookEvent1.Id);
-    //     Assert.Contains(returnedEvents, e => e.Id == webhookEvent2.Id);
-    // }
-
     [Fact]  
     public async Task DeleteEventAsync_ReturnsFalseForNonExistentEvent()
         {
@@ -163,5 +127,7 @@ public class EventsControllerTests
         
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         var problemDetails = Assert.IsType<ProblemDetails>(badRequestResult.Value);
+
+        repositoryMock.Verify(r => r.AddEventAsync(It.IsAny<WebhookEvent>()), Times.Never);        
     }
 }
