@@ -19,4 +19,9 @@ public class InMemoryWebhookEventRepository : IWebhookEventRepository
     {
         _webhookEvents.AddOrUpdate(webhookEvent.Id, webhookEvent, (key, oldValue) => webhookEvent);
     }
+
+    public bool DeleteEvent(Guid id)
+    {
+        return _webhookEvents.TryRemove(id, out _);
+    }
 }
