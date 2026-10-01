@@ -32,4 +32,24 @@ public class EventsController : ControllerBase
 
         return Created($"/api/events/{webhookEvent.Id}", webhookEvent);
     }
+
+    [HttpGet]
+    public IActionResult ListEvents()
+    {
+        var webhookEvents = _repository.GetAllEvents();
+        return Ok(webhookEvents);
+    }
+
+    [HttpGet("{id:guid}")]
+    public IActionResult GetEvent(Guid id)
+    {
+        var webhookEvent = _repository.GetEventById(id);
+        if (webhookEvent == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(webhookEvent);
+    }
+
 }
