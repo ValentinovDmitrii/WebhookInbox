@@ -4,22 +4,32 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class EventsController : ControllerBase
 {
-    private readonly IWebhookEventRepository repository = new InMemoryWebhookEventRepository();
+    private readonly IWebhookEventRepository _repository;
+
+    public EventsController(IWebhookEventRepository repository)
+    {
+        _repository = repository;
+    }
 
     [HttpPost]    
-    public IActionResult ReceiveEvent([FromBody] WebhookEvent webhookEvent)
+    public IActionResult ReceiveEvent([FromBody] CreateWebhookEventRequest webhookEventRequest)
     {
-        if (webhookEvent == null || string.IsNullOrEmpty(webhookEvent.Source?.Trim()) || string.IsNullOrEmpty(webhookEvent.EventType?.Trim()) || string.IsNullOrEmpty(webhookEvent.Payload?.Trim()))
+        if (webhookEventRequest == null || string.IsNullOrEmpty(webhookEventRequest.Source?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.EventType?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.Payload?.Trim()))
         {
             return BadRequest("Invalid webhook event data.");
         }
 
-        webhookEvent.ReceivedAt = DateTimeOffset.UtcNow;
+        var webhookEvent = new WebhookEvent
+        {
+            Source = webhookEventRequest.Source,
+            EventType = webhookEventRequest.EventType,
+            Payload = webhookEventRequest.Payload,
+            ReceivedAt = DateTimeOffset.UtcNow,
+            Id = Guid.NewGuid(),
+        };
 
-        webhookEvent.Id = Guid.NewGuid();
+        _repository.AddEvent(webhookEvent);
 
-        repository.AddEvent(webhookEvent);
-
-        return Ok(new { message = "Webhook event received successfully." });
+        return Created($"/api/events/{webhookEvent.Id}", webhookEvent);
     }
 }
