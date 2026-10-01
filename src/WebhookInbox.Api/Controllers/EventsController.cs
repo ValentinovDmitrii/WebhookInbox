@@ -52,4 +52,16 @@ public class EventsController : ControllerBase
         return Ok(webhookEvent);
     }
 
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteEvent(Guid id)
+    {
+        var deleted = _repository.DeleteEvent(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+
 }

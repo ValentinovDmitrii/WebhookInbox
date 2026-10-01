@@ -18,5 +18,8 @@ GET {{WebhookInbox_HostAddress}}/api/events
 Accept: application/json
 
 ###
-GET {{WebhookInbox_HostAddress}}/api/events/305cdc14-7287-48cc-afc5-66208234dbd
+GET {{WebhookInbox_HostAddress}}/api/events/450da462-8fde-4d72-b88b-24688ca97727
 Accept: application/json
+
+###
+DELETE {{WebhookInbox_HostAddress}}/api/events/450da462-8fde-4d72-b88b-24688ca97727
