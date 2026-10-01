@@ -16,7 +16,12 @@ public class EventsController : ControllerBase
     {
         if (webhookEventRequest == null || string.IsNullOrEmpty(webhookEventRequest.Source?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.EventType?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.Payload?.Trim()))
         {
-            return BadRequest("Invalid webhook event data.");
+            return BadRequest(new ProblemDetails
+            {
+                Title = "Invalid webhook event data",
+                Status = StatusCodes.Status400BadRequest,
+                Detail = "Source, EventType and Payload must not be empty."
+            });
         }
 
         var webhookEvent = new WebhookEvent
