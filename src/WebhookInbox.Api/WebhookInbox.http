@@ -4,3 +4,11 @@ GET {{WebhookInbox_HostAddress}}/health/
 Accept: application/json
 
 ###
+POST {{WebhookInbox_HostAddress}}/api/events
+Content-Type: application/json
+
+{
+  "source": "github",
+  "eventType": "push",
+  "payload": "{\"ref\":\"refs/heads/main\"}"
+}
