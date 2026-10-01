@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/WebhookInbox.Api/WebhookInbox.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WebhookInbox.Api.Tests/WebhookInbox.Api.Tests.csproj" />
+  </Folder>
 </Solution>
