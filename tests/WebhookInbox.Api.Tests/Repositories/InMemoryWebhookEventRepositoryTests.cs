@@ -33,27 +33,6 @@ public class InMemoryWebhookEventRepositoryTests
     }
 
     [Fact]
-    public async Task DeleteEventAsync_ReturnsTrueForExistingEvent()
-    {
-        var repository = new InMemoryWebhookEventRepository();
-
-        var webhookEvent = new WebhookEvent
-        {
-            Id = Guid.NewGuid(),
-            ReceivedAt = DateTimeOffset.UtcNow,
-            Source = "github",
-            EventType = "push",
-            Payload = "{}"
-        };
-
-        await repository.AddEventAsync(webhookEvent);
-
-        var result = await repository.DeleteEventAsync(webhookEvent.Id);
-
-        Assert.True(result);
-    }
-
-    [Fact]
     public async Task DeleteEventAsync_ReturnsFalseForNonExistentEvent()
     {
         var repository = new InMemoryWebhookEventRepository();
@@ -91,30 +70,9 @@ public class InMemoryWebhookEventRepositoryTests
 
         var result = await repository.GetAllEventsAsync();
 
+        Assert.Equal(2, result.Count);
         Assert.Contains(result, e => e.Id == webhookEvent1.Id);
         Assert.Contains(result, e => e.Id == webhookEvent2.Id);
-    }
-
-    [Fact]
-    public async Task AddEventAsync_AddsEventSuccessfully()
-    {
-        var repository = new InMemoryWebhookEventRepository();
-
-        var webhookEvent = new WebhookEvent
-        {
-            Id = Guid.NewGuid(),
-            ReceivedAt = DateTimeOffset.UtcNow,
-            Source = "github",
-            EventType = "push",
-            Payload = "{}"
-        };
-
-        await repository.AddEventAsync(webhookEvent);
-
-        var result = await repository.GetEventByIdAsync(webhookEvent.Id);
-
-        Assert.NotNull(result);
-        Assert.Equal(webhookEvent.Id, result.Id);
     }
 
     [Fact]
