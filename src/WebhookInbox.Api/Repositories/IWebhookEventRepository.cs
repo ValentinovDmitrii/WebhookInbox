@@ -1,7 +1,7 @@
 public interface IWebhookEventRepository
 {
-    IReadOnlyCollection<WebhookEvent> GetAllEvents();
-    WebhookEvent? GetEventById(Guid id);
-    void AddEvent(WebhookEvent webhookEvent);
-    bool DeleteEvent(Guid id);
+    Task<IReadOnlyCollection<WebhookEvent>> GetAllEventsAsync();
+    Task<WebhookEvent?> GetEventByIdAsync(Guid id);
+    Task AddEventAsync(WebhookEvent webhookEvent);
+    Task<bool> DeleteEventAsync(Guid id);
 }
