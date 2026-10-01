@@ -1,6 +1,6 @@
 public interface IWebhookEventRepository
 {
-    Task<IEnumerable<WebhookEvent>> GetAllEvents();
-    Task<WebhookEvent?> GetEventById(Guid id);
-    Task AddEvent(WebhookEvent webhookEvent);
+    IReadOnlyCollection<WebhookEvent> GetAllEvents();
+    WebhookEvent? GetEventById(Guid id);
+    void AddEvent(WebhookEvent webhookEvent);
 }

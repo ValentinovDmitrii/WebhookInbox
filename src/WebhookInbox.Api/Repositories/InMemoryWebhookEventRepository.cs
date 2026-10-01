@@ -4,20 +4,19 @@ public class InMemoryWebhookEventRepository : IWebhookEventRepository
 {
     private readonly ConcurrentDictionary<Guid, WebhookEvent> _webhookEvents = new();
 
-    public Task<IEnumerable<WebhookEvent>> GetAllEvents()
+    public IReadOnlyCollection<WebhookEvent> GetAllEvents()
     {
-        return Task.FromResult<IEnumerable<WebhookEvent>>(_webhookEvents.Values);
+        return _webhookEvents.Values.ToArray();
     }
 
-    public Task<WebhookEvent?> GetEventById(Guid id)
+    public WebhookEvent? GetEventById(Guid id)
     {
         var webhookEvent = _webhookEvents.GetValueOrDefault(id);
-        return Task.FromResult(webhookEvent);
+        return webhookEvent;
     }
 
-    public Task AddEvent(WebhookEvent webhookEvent)
+    public void AddEvent(WebhookEvent webhookEvent)
     {
         _webhookEvents.AddOrUpdate(webhookEvent.Id, webhookEvent, (key, oldValue) => webhookEvent);
-        return Task.CompletedTask;
     }
 }
