@@ -12,7 +12,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]    
-    public IActionResult ReceiveEvent([FromBody] CreateWebhookEventRequest webhookEventRequest)
+    public async Task<IActionResult> ReceiveEvent([FromBody] CreateWebhookEventRequest webhookEventRequest)
     {
         if (webhookEventRequest == null || string.IsNullOrEmpty(webhookEventRequest.Source?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.EventType?.Trim()) || string.IsNullOrEmpty(webhookEventRequest.Payload?.Trim()))
         {
@@ -28,22 +28,22 @@ public class EventsController : ControllerBase
             Id = Guid.NewGuid(),
         };
 
-        _repository.AddEvent(webhookEvent);
+        await _repository.AddEventAsync(webhookEvent);
 
         return Created($"/api/events/{webhookEvent.Id}", webhookEvent);
     }
 
     [HttpGet]
-    public IActionResult ListEvents()
+    public async Task<IActionResult> ListEvents()
     {
-        var webhookEvents = _repository.GetAllEvents();
+        var webhookEvents = await _repository.GetAllEventsAsync();
         return Ok(webhookEvents);
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetEvent(Guid id)
+    public async Task<IActionResult> GetEvent(Guid id)
     {
-        var webhookEvent = _repository.GetEventById(id);
+        var webhookEvent = await _repository.GetEventByIdAsync(id);
         if (webhookEvent == null)
         {
             return NotFound();
@@ -53,9 +53,9 @@ public class EventsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteEvent(Guid id)
+    public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        var deleted = _repository.DeleteEvent(id);
+        var deleted = await _repository.DeleteEventAsync(id);
         if (!deleted)
         {
             return NotFound();
